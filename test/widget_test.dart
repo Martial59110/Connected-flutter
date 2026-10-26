@@ -8,7 +8,10 @@ import 'package:connected/viewmodels/dashboard_view_model.dart';
 void main() {
   testWidgets('affiche le dashboard SensorHub', (WidgetTester tester) async {
     final viewModel = DashboardViewModel(
-      repository: FakeSensorRepository(delay: Duration.zero),
+      repository: FakeSensorRepository(
+        delay: Duration.zero,
+        failOddAttempts: false,
+      ),
     );
     await viewModel.load();
 
@@ -22,5 +25,6 @@ void main() {
     expect(find.text('Garage'), findsOneWidget);
     expect(find.text('Cave'), findsOneWidget);
     expect(find.text('Alerte'), findsOneWidget);
+    viewModel.dispose();
   });
 }

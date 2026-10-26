@@ -3,12 +3,18 @@ import 'sensor_repository.dart';
 
 class FakeSensorRepository implements SensorRepository {
   FakeSensorRepository({
-    this.delay = const Duration(milliseconds: 600),
+    this.delay = const Duration(seconds: 3),
+    this.failOddAttempts = true,
     this.throwError = false,
   });
 
   final Duration delay;
+  final bool failOddAttempts;
   final bool throwError;
+
+  int _fetchCount = 0;
+
+  int get fetchCount => _fetchCount;
 
   static final _sensors = [
     Sensor(
@@ -55,10 +61,11 @@ class FakeSensorRepository implements SensorRepository {
 
   @override
   Future<List<Sensor>> fetchAll() async {
+    _fetchCount++;
     if (delay > Duration.zero) {
       await Future<void>.delayed(delay);
     }
-    if (throwError) {
+    if (throwError || (failOddAttempts && _fetchCount.isOdd)) {
       throw Exception('Impossible de charger les capteurs');
     }
     return List.unmodifiable(_sensors);
