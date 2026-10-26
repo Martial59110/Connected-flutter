@@ -72,7 +72,8 @@ class DashboardViewModel extends ChangeNotifier {
       _scheduleStaleCheck();
       _setState(Content(values));
     } catch (error) {
-      _setState(Failure(error.toString()));
+      final message = error.toString().replaceFirst('Exception: ', '');
+      _setState(Failure(message));
     } finally {
       _inFlight = false;
       notifyListeners();

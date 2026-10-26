@@ -26,6 +26,7 @@ class DashboardPage extends StatelessWidget {
             surfaceTintColor: Colors.transparent,
             actions: [
               IconButton(
+                tooltip: 'Actualiser',
                 icon: viewModel.isRefreshing
                     ? const SizedBox(
                         width: 20,
